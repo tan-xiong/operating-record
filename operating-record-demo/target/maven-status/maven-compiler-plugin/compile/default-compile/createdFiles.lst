@@ -1,0 +1,5 @@
+com\tx\operating\controller\SimpleExampleController.class
+com\tx\operating\entity\Example.class
+com\tx\operating\entity\Example$User.class
+com\tx\operating\entity\Example$Detail.class
+com\tx\operating\OperatingRecordDemoApplication.class

@@ -1,0 +1,8 @@
+com\tx\operating\utils\ConvertJsonObjUtil.class
+com\tx\operating\annotation\LogRecordAnnotation.class
+com\tx\operating\expression\json\JsonExpression.class
+com\tx\operating\aspect\LogRecordAspect.class
+com\tx\operating\utils\LogRecordOperationSource.class
+com\tx\operating\spi\handle\DefaultSqlSaveRecordSpi.class
+com\tx\operating\spi\KeepOperatingRecordSpi.class
+com\tx\operating\expression\json\JsonExpressionParser.class

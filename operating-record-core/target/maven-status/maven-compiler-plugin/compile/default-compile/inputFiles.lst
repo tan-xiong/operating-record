@@ -1,0 +1,8 @@
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\expression\json\JsonExpression.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\aspect\LogRecordAspect.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\utils\ConvertJsonObjUtil.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\utils\LogRecordOperationSource.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\spi\handle\DefaultSqlSaveRecordSpi.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\spi\KeepOperatingRecordSpi.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\expression\json\JsonExpressionParser.java
+E:\operating-record\operating-record-core\src\main\java\com\tx\operating\annotation\LogRecordAnnotation.java
