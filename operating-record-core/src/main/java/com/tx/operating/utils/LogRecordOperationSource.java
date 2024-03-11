@@ -43,9 +43,6 @@ public class LogRecordOperationSource {
         Map<String, Object> spelMap = new HashMap<>();
         for (Method method : methods) {
             try {
-                if(method.getName().equals("clazz")){
-                    continue;
-                }
                 Object value = method.invoke(logRecord);
                 spelMap.put(method.getName(), value);
             } catch (IllegalAccessException | InvocationTargetException e) {
