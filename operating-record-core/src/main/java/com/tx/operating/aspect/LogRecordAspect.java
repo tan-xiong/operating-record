@@ -1,18 +1,17 @@
 package com.tx.operating.aspect;
 
-import com.alibaba.fastjson.JSONObject;
 import com.tx.operating.annotation.LogRecordAnnotation;
 import com.tx.operating.constants.CommonConstants;
-import com.tx.operating.constants.ErrorCodeConstants;
 import com.tx.operating.exception.OrsRuntimeException;
 import com.tx.operating.spi.KeepOperatingRecordSpi;
 import com.tx.operating.utils.LogRecordOperationSource;
-import com.tx.operating.utils.ConvertJsonObjUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
@@ -35,17 +34,13 @@ public class LogRecordAspect {
     @Around("method()")
     public Object divAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        JSONObject param = null;
-        for (Object o : joinPoint.getArgs()) {
-            param = ConvertJsonObjUtil.convertJsonObject(o);
-        }
-
         //获取注解信息
         LogRecordAnnotation annotation = LogRecordOperationSource.getAnnotation(joinPoint);
         //获取SPEL表达式
         Map<String, Object> spelMap = LogRecordOperationSource.getBeforeExecuteFunctionTemplate(annotation);
         //执行SPEL表达式
-        Map<String, Object> resultMap = LogRecordOperationSource.processBeforeExecuteFunctionTemplate(spelMap, param);
+        AnnotatedElementKey methodKey=new AnnotatedElementKey(((MethodSignature) joinPoint.getSignature()).getMethod(),joinPoint.getTarget().getClass());
+        Map<String, Object> resultMap = LogRecordOperationSource.processBeforeExecuteFunctionTemplate(spelMap,methodKey,joinPoint.getArgs()[0]);
 
         Object proceed = null;
         try {

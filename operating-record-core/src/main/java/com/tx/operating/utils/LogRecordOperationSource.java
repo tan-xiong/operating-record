@@ -1,24 +1,29 @@
 package com.tx.operating.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.tx.operating.annotation.LogRecordAnnotation;
-import com.tx.operating.expression.json.JsonExpressionParser;
+import com.tx.operating.constants.CommonConstants;
+import com.tx.operating.expression.OperateRecordExpressionParse;
+import com.tx.operating.factorys.ParseFunctionFactory;
+import com.tx.operating.service.IParseFunction;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.expression.Expression;
-import org.springframework.expression.common.TemplateParserContext;
+import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author tanxiong
  * @date 2023/1/28 15:33
  */
 public class LogRecordOperationSource {
-
 
     /**
      * 获取方法上的注解数据
@@ -52,16 +57,36 @@ public class LogRecordOperationSource {
         return spelMap;
     }
 
-    public static Map<String, Object> processBeforeExecuteFunctionTemplate(Map<String, Object> spelMap, JSONObject param) {
-        StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext(param);
-        JsonExpressionParser parser = new JsonExpressionParser();
-        Map<String, Object> resultMap=new HashMap<>();
+    public static Map<String, Object> processBeforeExecuteFunctionTemplate(Map<String, Object> spelMap, AnnotatedElementKey methodKey, Object param) {
+        StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext();
+        standardEvaluationContext.setVariable(param.getClass().getSimpleName(), param);
+        OperateRecordExpressionParse parser = new OperateRecordExpressionParse();
+        Map<String, Object> resultMap = new HashMap<>();
         for (Map.Entry<String, Object> temp : spelMap.entrySet()) {
-            Expression expression = parser.parseExpression(String.valueOf(temp.getValue()), new TemplateParserContext());
-            Object value = expression.getValue(standardEvaluationContext);
-            resultMap.put(temp.getKey(), value);
-        }
+            String expression = String.valueOf(temp.getValue());
+            if (StringUtils.isBlank(expression)) {
+                continue;
+            }
+            List<String> functionTemplates = TemplateParseUtil.getFunctionTemplate(expression);
 
+            List<String> spelTemplates = TemplateParseUtil.getSpelTemplate(expression);
+            for (String spel : spelTemplates) {
+                String execSpel = "{#" + spel + "}";
+                String value = String.valueOf(parser.parseExpression(execSpel, methodKey, standardEvaluationContext));
+                expression = expression.replace(execSpel, CommonConstants.DOUBLE_AT + value);
+            }
+
+            if (!CollectionUtils.isEmpty(functionTemplates)) {
+                String functionName = TemplateParseUtil.getFunctionName(expression);
+                String functionArgs = TemplateParseUtil.getFunctionArgs(expression);
+                ParseFunctionFactory parseFunctionFactory = new ParseFunctionFactory();
+                IParseFunction function = parseFunctionFactory.getFunction(functionName);
+                String value = function.apply(functionArgs);
+                expression = expression.replaceAll(TemplateParseUtil.FUNCTION_TEMPLATE, value);
+            }
+            expression = expression.replace(CommonConstants.DOUBLE_AT, "");
+            resultMap.put(temp.getKey(), expression);
+        }
         return resultMap;
     }
 

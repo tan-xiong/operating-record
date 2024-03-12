@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleExampleController {
 
     @RequestMapping("/record")
-    @LogRecordAnnotation(detail = "121212121,#{address}")
-    public void modifyAddress(@RequestBody Example json){
-        int i=1/0;
-        System.out.println(JSON.toJSONString(json));
+    @LogRecordAnnotation(bizNo = "业务单号,`{DefaultFunction{#Example.address}}`",detail = "{#Example.address}")
+    public void modifyAddress(@RequestBody Example example){
+//        int i=1/0;
+        System.out.println(JSON.toJSONString(example));
     }
 
 }

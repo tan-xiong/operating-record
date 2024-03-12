@@ -7,4 +7,6 @@ package com.tx.operating.constants;
 public interface CommonConstants {
 
     String SUCCEED ="succeed";
+
+    String DOUBLE_AT="@@";
 }
