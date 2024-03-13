@@ -78,7 +78,7 @@ public class LogRecordOperationSource {
 
             if (!CollectionUtils.isEmpty(functionTemplates)) {
                 String functionName = TemplateParseUtil.getFunctionName(expression);
-                String functionArgs = TemplateParseUtil.getFunctionArgs(expression);
+                String functionArgs = TemplateParseUtil.getFunctionArgs(functionName,expression);
                 ParseFunctionFactory parseFunctionFactory = new ParseFunctionFactory();
                 IParseFunction function = parseFunctionFactory.getFunction(functionName);
                 String value = function.apply(functionArgs);

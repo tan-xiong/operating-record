@@ -3,6 +3,7 @@ package com.tx.operating.controller;
 import com.alibaba.fastjson.JSON;
 import com.tx.operating.annotation.LogRecordAnnotation;
 import com.tx.operating.entity.Example;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author tanxiong
  * @date 2023/11/8 10:36
  */
+@Slf4j
 @RestController
 @RequestMapping("operating")
 public class SimpleExampleController {
 
     @RequestMapping("/record")
-    @LogRecordAnnotation(bizNo = "业务单号,`{DefaultFunction{#Example.address}}`",detail = "{#Example.address}",category = "不错呦{#Example.user.age}")
+    @LogRecordAnnotation(bizNo = "DSO024131200015",detail = "{#Example.user.name}将地址从`{DefaultFunction{#Example.address}}`修改为{#Example.address}",category = "修改",operator = "{#Example.user.name}")
     public void modifyAddress(@RequestBody Example example){
-//        int i=1/0;
-        System.out.println(JSON.toJSONString(example));
+        log.info("/// 用户修改地址参数{}",JSON.toJSONString(example));
     }
 
 }

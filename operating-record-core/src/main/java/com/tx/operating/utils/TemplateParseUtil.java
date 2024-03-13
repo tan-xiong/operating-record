@@ -17,7 +17,7 @@ public class TemplateParseUtil {
 
     public static final String FUNCTION_TEMPLATE = "`\\{(.+?)\\}`";
     private static final String FUNCTION_NAME = "(\\w+)@@";
-    private static final String FUNCTION_ARGS = "@@([^}]+)";
+    private static final String FUNCTION_ARGS = "@@([^}]+)\\}`";
     private static final String SPEL_TEMPLATE = "\\{#([^}]+)\\}";
 
     public static List<String> getFunctionTemplate(String str) {
@@ -41,8 +41,8 @@ public class TemplateParseUtil {
         return null;
     }
 
-    public static String getFunctionArgs(String str) {
-        Pattern functionArgsPattern = Pattern.compile(FUNCTION_ARGS);
+    public static String getFunctionArgs(String functionName, String str) {
+        Pattern functionArgsPattern = Pattern.compile(functionName + FUNCTION_ARGS);
         Matcher functionArgsMatcher = functionArgsPattern.matcher(str);
         if (functionArgsMatcher.find()) {
             return functionArgsMatcher.group(1);
@@ -75,13 +75,11 @@ public class TemplateParseUtil {
 //        log.info("/// TemplateParseUtil 执行结果" + JSON.toJSONString(template1));
 
         String template2 = getFunctionName(str2);
-       log.info("/// TemplateParseUtil 执行结果" + JSON.toJSONString(template2));
+        log.info("/// TemplateParseUtil 执行结果" + JSON.toJSONString(template2));
 
 
-        String template3 = getFunctionArgs(str2);
-       log.info("/// TemplateParseUtil 执行结果" + JSON.toJSONString(template3));
-
-
+        String template3 = getFunctionArgs("defu", str2);
+        log.info("/// TemplateParseUtil 执行结果" + JSON.toJSONString(template3));
 
 
     }
