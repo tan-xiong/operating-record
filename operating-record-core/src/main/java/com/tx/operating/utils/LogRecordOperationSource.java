@@ -60,7 +60,7 @@ public class LogRecordOperationSource {
     public static Map<String, Object> processBeforeExecuteFunctionTemplate(Map<String, Object> spelMap, AnnotatedElementKey methodKey, Object param) {
         StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext();
         standardEvaluationContext.setVariable(param.getClass().getSimpleName(), param);
-        OperateRecordExpressionParse parser = new OperateRecordExpressionParse();
+        OperateRecordExpressionParse parser = OperateRecordExpressionParse.getInstance();
         Map<String, Object> resultMap = new HashMap<>();
         for (Map.Entry<String, Object> temp : spelMap.entrySet()) {
             String expression = String.valueOf(temp.getValue());

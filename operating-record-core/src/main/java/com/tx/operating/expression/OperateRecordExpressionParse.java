@@ -14,9 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class OperateRecordExpressionParse extends CachedExpressionEvaluator {
 
+    private final static OperateRecordExpressionParse operateRecordExpressionParse=new OperateRecordExpressionParse();
+
+    public OperateRecordExpressionParse(){}
+
     private Map<ExpressionKey, Expression> expressionCache = new ConcurrentHashMap<>(64);
 
     public String parseExpression(String conditionExpression, AnnotatedElementKey methodKey, EvaluationContext evalContext) {
         return getExpression(this.expressionCache, methodKey, conditionExpression).getValue(evalContext, String.class);
+    }
+
+    public static OperateRecordExpressionParse getInstance(){
+        return operateRecordExpressionParse;
     }
 }

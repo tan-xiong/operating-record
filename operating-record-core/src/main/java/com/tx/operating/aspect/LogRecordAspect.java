@@ -14,6 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -33,7 +34,7 @@ public class LogRecordAspect {
 
     @Around("method()")
     public Object divAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        Map<String, Object> resultMap = null;
+        Map<String, Object> resultMap = new HashMap<>();
         Object proceed = null;
 
         try {

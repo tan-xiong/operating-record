@@ -12,10 +12,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class DefaultFunction implements IParseFunction {
-    @Override
-    public boolean executeBefore() {
-        return true;
-    }
 
     @Override
     public String functionName() {
