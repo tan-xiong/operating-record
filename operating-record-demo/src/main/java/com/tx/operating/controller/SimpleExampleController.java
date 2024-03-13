@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleExampleController {
 
     @RequestMapping("/record")
-    @LogRecordAnnotation(bizNo = "业务单号,`{DefaultFunction{#Example.address}}`",detail = "{#Example.address}")
+    @LogRecordAnnotation(bizNo = "业务单号,`{DefaultFunction{#Example.address}}`",detail = "{#Example.address}",category = "不错呦{#Example.user.age}")
     public void modifyAddress(@RequestBody Example example){
 //        int i=1/0;
         System.out.println(JSON.toJSONString(example));

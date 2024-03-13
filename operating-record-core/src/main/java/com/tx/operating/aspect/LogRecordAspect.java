@@ -33,16 +33,21 @@ public class LogRecordAspect {
 
     @Around("method()")
     public Object divAround(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        //获取注解信息
-        LogRecordAnnotation annotation = LogRecordOperationSource.getAnnotation(joinPoint);
-        //获取SPEL表达式
-        Map<String, Object> spelMap = LogRecordOperationSource.getBeforeExecuteFunctionTemplate(annotation);
-        //执行SPEL表达式
-        AnnotatedElementKey methodKey=new AnnotatedElementKey(((MethodSignature) joinPoint.getSignature()).getMethod(),joinPoint.getTarget().getClass());
-        Map<String, Object> resultMap = LogRecordOperationSource.processBeforeExecuteFunctionTemplate(spelMap,methodKey,joinPoint.getArgs()[0]);
-
+        Map<String, Object> resultMap = null;
         Object proceed = null;
+
+        try {
+            //获取注解信息
+            LogRecordAnnotation annotation = LogRecordOperationSource.getAnnotation(joinPoint);
+            //获取SPEL表达式
+            Map<String, Object> spelMap = LogRecordOperationSource.getBeforeExecuteFunctionTemplate(annotation);
+            //执行SPEL表达式和执行自定义函数
+            AnnotatedElementKey methodKey=new AnnotatedElementKey(((MethodSignature) joinPoint.getSignature()).getMethod(),joinPoint.getTarget().getClass());
+            resultMap = LogRecordOperationSource.processBeforeExecuteFunctionTemplate(spelMap,methodKey,joinPoint.getArgs()[0]);
+        } catch (Exception e) {
+           log.info("/// log record exec error",e);
+        }
+
         try {
             proceed = joinPoint.proceed();
         } catch (Exception e) {
