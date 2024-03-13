@@ -6,5 +6,8 @@ package com.tx.operating.spi;
  */
 public interface KeepOperatingRecordSpi {
 
+   /**
+    * 持久化日志
+    */
    <T> void keepRecord(T t);
 }

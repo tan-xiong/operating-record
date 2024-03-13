@@ -56,6 +56,7 @@ public class LogRecordAspect {
             resultMap.put(CommonConstants.SUCCEED,false);
             throw new OrsRuntimeException("//// 目标方法执行异常,"+ e.getMessage());
         }finally {
+            //通过SPI加载自定义持久化日志的方法进行日志持久化
             ServiceLoader<KeepOperatingRecordSpi> loader = ServiceLoader.load(KeepOperatingRecordSpi.class);
             Iterator<KeepOperatingRecordSpi> it = loader.iterator();
             if (it.hasNext()) {
@@ -66,6 +67,5 @@ public class LogRecordAspect {
 
         return proceed;
     }
-
 
 }

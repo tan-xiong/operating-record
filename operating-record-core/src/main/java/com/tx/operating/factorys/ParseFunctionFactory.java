@@ -18,6 +18,7 @@ public class ParseFunctionFactory {
     private Map<String, IParseFunction> allFunctionMap;
 
     public ParseFunctionFactory() {
+        // 通过反射获取所有IParseFunction接口的实现类
         List<Object> parseFunctions = FindImplementationsUtil.findImplementations(IParseFunction.class);
         if (CollectionUtils.isEmpty(parseFunctions)) {
             return;
